@@ -1,28 +1,4 @@
 let x = document.getElementById("display");
-
-/*
-addEventListener('keypress', function(event) {
-    if (event.key >= '0' && event.key <= '9' && x.textContent.length < 10) { // We used === because we strictly want "Enter"
-        if (x.textContent[0] == '0') {
-            x.textContent = event.key;
-        } else {
-            x.textContent += event.key;
-        }
-        console.log(event.key);
-    }
-});
-
-document.querySelector('#calc');
-addEventListener('click', function (event) {
-    if (event.target.matches('button')) { // Only returns buttons text, not anythings html
-        if (event.target.innerHTML >= '0' && event.target.innerHTML <= '9') {
-            x.textContent = event.target.innerHTML;
-        }
-        console.log(event.target.innerHTML); // Event is something on screen, target is the html of that something, innerhtml is what is in the html 
-    }
-});
-*/
-
 let buff = '0';
 let total = 0;
 let prev_oper = null;
@@ -39,7 +15,7 @@ function handleEvent (event) {
         e = event.key;
     }
 
-    if (!isNaN(e) && x.textContent.length < 10) { 
+    if (e == '.' || !isNaN(e) && x.textContent.length < 10) { 
         if (x.textContent[0] == '0' || symbol_pressed) {
             x.textContent = e;
             symbol_pressed = false;
@@ -95,27 +71,27 @@ function handleSymbol(e) {
 
 function doMath(symbol) {
 
-    let int_buff = parseInt(buff);
+    let num_buff = parseFloat(buff);
 
     if (total === 0) {
-        total = int_buff;
+        total = num_buff;
     }
     else{
         switch (prev_oper) {
             case '+':
-                total += int_buff;
+                total += num_buff;
                 break;
             case '-':
-                total -= int_buff;
+                total -= num_buff;
                 break;
             case '*':
-                total *= int_buff;
+                total *= num_buff;
                 break;
             case '/':
-                if (int_buff == 0) {
+                if (num_buff == 0) {
                     alert("Can't Divide by Zero!");
                 }else{
-                    total /= int_buff;
+                    total /= num_buff;
                 }
                 break;
         }
