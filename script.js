@@ -30,23 +30,32 @@ function handleEvent (event) {
             x.textContent += e;
         }
     }
-    else{
+    else{ // if not, then it will be a symbol
         handleSymbol(e);
-        symbol_pressed = true;
+
+        // Changes back to true that way the display shows a new number and doesn't append it
+        symbol_pressed = true; 
     }
 }
 
+// Takes care of a symbol
 function handleSymbol(e) {
+
+    // Gets the factor
     buff = x.textContent;
+
+    // Conditional to check which it is
     switch(e) {
         case 'C':
         case 'c':
+            // Resets it
             buff = 0;
             total = 0;
             x.textContent = 0;
             break;
         case 'del':
         case 'Backspace':
+            // Gets rid of last character
             if (x.textContent.length === 1) {
                 x.textContent = 0;
             } else {
@@ -55,6 +64,7 @@ function handleSymbol(e) {
             break;
         case '=':
         case 'Enter':
+            // Prints out the total so far
             if (prev_oper == null) {
                 return buff;
             }
@@ -65,6 +75,7 @@ function handleSymbol(e) {
             total = 0;
             break;
         case '+/-':
+            // Toggles negative sign
             if (x.textContent == '0') {
                 return;
             }
@@ -79,15 +90,19 @@ function handleSymbol(e) {
         case '-':
         case '*':
         case '/':
-            buff = x.textContent;
+            // Takes care of the math part
             doMath(e);
             x.textContent = total;
+
+            // Shortens if it too long
+            x.textContent = x.textContent.substring(0, 9);
             break;
     }
 }
 
 function doMath(symbol) {
 
+    // Turns the string to a number to do arithmetic with
     let num_buff = parseFloat(buff);
 
     if (total === 0) {
@@ -114,11 +129,12 @@ function doMath(symbol) {
         }
     }
 
+    // Since the switch uses the previous operator, we have to store the current symbol after doing the math
     prev_oper = symbol;
 }
 
 
-
+// Gets the buttons and listens for events
 document.querySelector('#calc');
 addEventListener('click', handleEvent);
 addEventListener('keypress', handleEvent);
