@@ -1,13 +1,19 @@
-let x = document.getElementById("display");
-let buff = '0';
-let total = 0;
-let prev_oper = null;
-let symbol_pressed = true;
+let x = document.getElementById("display"); // To control the display
+let buff = '0'; // To get the previous factor
+let total = 0; // To get the total
+let prev_oper = null; // To get what the previous operator was
+let symbol_pressed = true; // This variable is to make sure the second factor is not appended to the previous factor
 
+/**
+ * This function will determine what type of input the user has done and then do the rest accordingly
+ * 
+ * @param {event} event - What the user input is
+ */
 function handleEvent (event) {
+
+    // conditional to check if the user clicked a button or entered a key
     // if e is a button click 
     // else e is a key press
-
     let e;
     if (event.target.matches('button')) {
         e = event.target.innerHTML;
@@ -15,6 +21,7 @@ function handleEvent (event) {
         e = event.key;
     }
 
+    // This conditional will check if the input is an element of a number ( numeric value or decimal )
     if (e == '.' || !isNaN(e) && x.textContent.length < 10) { 
         if (x.textContent[0] == '0' || symbol_pressed) {
             x.textContent = e;
@@ -27,8 +34,6 @@ function handleEvent (event) {
         handleSymbol(e);
         symbol_pressed = true;
     }
-    x.textContent - buff;
-    
 }
 
 function handleSymbol(e) {
@@ -59,12 +64,24 @@ function handleSymbol(e) {
             buff = total;
             total = 0;
             break;
+        case '+/-':
+            if (x.textContent == '0') {
+                return;
+            }
+            if (x.textContent[0] == '-') {
+                x.textContent = x.textContent.substring(1, x.textContent.length);
+            }
+            else {
+                x.textContent = '-' + x.textContent;
+            }
+            break;
         case '+':
         case '-':
         case '*':
         case '/':
             buff = x.textContent;
             doMath(e);
+            x.textContent = total;
             break;
     }
 }
